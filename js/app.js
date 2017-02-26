@@ -304,6 +304,7 @@ window.addEventListener('load', function () {
 
     function load(xmlText, workspace) {
         var xml = Blockly.Xml.textToDom(xmlText);
+        workspace.clear();
         Blockly.Xml.domToWorkspace(xml, workspace);
     }
 
@@ -311,7 +312,7 @@ window.addEventListener('load', function () {
         var store = JSON.parse(window.localStorage.bandBlocksXml || '{}'),
             xmlText = store[name],
             xml;
-           
+
         if (xmlText) {
             load(xmlText, workspace);
         }
