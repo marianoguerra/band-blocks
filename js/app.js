@@ -237,7 +237,6 @@ window.addEventListener('load', function () {
                 group = 'noises';
         }
 
-        console.log(instrumentId, group, select);
         return {id: instrumentId, group: group};
     }
 
@@ -248,15 +247,22 @@ window.addEventListener('load', function () {
             suffixCode = ';\nvar $p = $c.finish();\n$p.play();\n',
             code = prefixCode + userCode + suffixCode;
 
-        console.log(code);
         eval(code);
     }
 
-    function save(workspace) {
+    function save(workspace, name) {
         var xml = Blockly.Xml.workspaceToDom(workspace),
-            xmlText = Blockly.Xml.domToText(xml);
+            xmlText = Blockly.Xml.domToText(xml),
+            store;
 
-        window.localStorage.bandBlocksXml = xmlText;
+        if (window.localStorage.bandBlocksXml) {
+            store = JSON.parse(window.localStorage.bandBlocksXml);
+        } else {
+            store = {};
+        }
+
+        store[name] = xmlText;
+        window.localStorage.bandBlocksXml = JSON.stringify(store);
     }
 
     function load(xmlText, workspace) {
@@ -264,8 +270,9 @@ window.addEventListener('load', function () {
         Blockly.Xml.domToWorkspace(xml, workspace);
     }
 
-    function restore(workspace) {
-        var xmlText = window.localStorage.bandBlocksXml,
+    function restore(workspace, name) {
+        var store = JSON.parse(window.localStorage.bandBlocksXml || '{}'),
+            xmlText = store[name],
             xml;
            
         if (xmlText) {
@@ -296,7 +303,6 @@ window.addEventListener('load', function () {
         loadBtn.addEventListener('click', function (evt) {
             var sampleId = samples.value,
                 sampleXML = window.bandBlocksSamples.samples[sampleId];
-            console.log('loading', sampleId, sampleXML);
             load(sampleXML, workspace);
         });
     }
@@ -306,6 +312,7 @@ window.addEventListener('load', function () {
             playBtn = document.getElementById('play'),
             saveBtn = document.getElementById('save'),
             restoreBtn = document.getElementById('restore'),
+            clearBtn = document.getElementById('clear'),
 			workspace;
 
 		blockCont.style.height = '' + window.innerHeight + 'px';
@@ -318,16 +325,27 @@ window.addEventListener('load', function () {
         });
 
         saveBtn.addEventListener('click', function () {
-            save(workspace);
+            var name = window.prompt('Name', 'default');
+            save(workspace, name);
         });
 
         restoreBtn.addEventListener('click', function () {
-            restore(workspace);
+            var name = window.prompt('Name', 'default');
+            restore(workspace, name);
         });
 
-        restore(workspace);
+        clearBtn.addEventListener('click', function () {
+            var yes = window.confirm('Sure?');
+
+            if (yes) {
+                workspace.clear();
+            }
+        });
+
+        restore(workspace, 'default');
 
         initSamples(workspace);
+        window.ws = workspace;
     }
 
     initBlocks();
