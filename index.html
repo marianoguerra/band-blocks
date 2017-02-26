@@ -13,27 +13,42 @@
 		<link rel="stylesheet" href="css/app.css">
  </head>
  <body>
-  <div class="controls">
-   <button id="play">Play</button>
-   <button id="save">Save</button>
-   <button id="restore">Restore</button>
-   <label for="instrument">Instrument: </label>
-   <select id="instrument">
-    <option value="sine">Sine</option>
-    <option value="square">Square</option>
-    <option value="sawtooth">Saw Tooth</option>
-    <option value="triangle">Triangle</option>
-    <option value="white">White Noise</option>
-    <option value="pink">Pink Noise</option>
-    <option value="red">Red Noise</option>
-   </select>
-   <label for="samples">Samples: </label>
-   <select id="samples"></select>
-   <button id="loadSample">Load Sample</button>
-   <button id="clear">Clear</button>
-   <a href="https://github.com/marianoguerra/band-blocks/blob/master/README.rst">About</a>
+  <table class="tabs">
+   <tr>
+    <td id="tab-blocks" class="active" onclick="switchTo('tab-blocks')">Blocks</td>
+    <td id="tab-code" onclick="switchTo('tab-code')">Code</td>
+   </tr>
+  </table>
+
+  <div class="tab-sections">
+   <div id="tab-blocks-section" class="tab-section active">
+    <div class="controls">
+     <button id="play">Play</button>
+     <button id="save">Save</button>
+     <button id="restore">Restore</button>
+     <label for="instrument">Instrument: </label>
+     <select id="instrument">
+      <option value="sine">Sine</option>
+      <option value="square">Square</option>
+      <option value="sawtooth">Saw Tooth</option>
+      <option value="triangle">Triangle</option>
+      <option value="white">White Noise</option>
+      <option value="pink">Pink Noise</option>
+      <option value="red">Red Noise</option>
+     </select>
+     <label for="samples">Samples: </label>
+     <select id="samples"></select>
+     <button id="loadSample">Load Sample</button>
+     <button id="clear">Clear</button>
+     <button id="showCode">Show Code</button>
+     <a href="https://github.com/marianoguerra/band-blocks/blob/master/README.rst">About</a>
+    </div>
+    <div id="blockCont" style="height: 480px; width: 100%;"></div>
+   </div>
+   <div id="tab-code-section" class="tab-section">
+    <textarea id="code" style="width: 98%; margin: 0.5%; padding: 0.5%; height: 25em;"></textarea>
+   </div>
   </div>
-  <div id="blockCont" style="height: 480px; width: 100%;"></div>
 
   <xml id="toolbox" style="display: none">
     <category name="Sound" colour="250">

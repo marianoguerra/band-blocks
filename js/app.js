@@ -103,6 +103,27 @@ window.addEventListener('load', function () {
     function Rest() {
     }
 
+    function switchTo(tabId) {
+        var tabs = document.querySelectorAll('.tabs td'),
+            bodies = document.querySelectorAll('.tab-sections .tab-section'),
+            currentTab = document.getElementById(tabId),
+            currentBody = document.getElementById(tabId + '-section'),
+            i, len, tab, body;
+
+        for (i = 0, len = tabs.length; i < len; i += 1) {
+            tab = tabs[i];
+            tab.className = '';
+        }
+
+        for (i = 0, len = bodies.length; i < len; i += 1) {
+            body = bodies[i];
+            body.className = 'tab-section';
+        }
+
+        currentTab.className = 'active';
+        currentBody.className = 'tab-section active';
+    }
+
     function initBlocks() {
         Blockly.Blocks.sound = {
             init: function() {
@@ -240,13 +261,29 @@ window.addEventListener('load', function () {
         return {id: instrumentId, group: group};
     }
 
-    function play(workspace) {
+    function setCode(code) {
+        document.getElementById('code').innerHTML = code;
+    }
+
+    function getCode(workspace) {
         var instrument = getInstrument(),
             userCode = Blockly.JavaScript.workspaceToCode(workspace),
-            prefixCode = 'var $c = new BandJS();\n$c.setTimeSignature(2, 2);\n$c.setTempo(180);var inst = $c.createInstrument("' + instrument.id + '", "' + instrument.group + '");\n\n',
-            suffixCode = ';\nvar $p = $c.finish();\n$p.play();\n',
+            prefixCode = 'var composer = new BandJS();\ncomposer.setTimeSignature(2, 2);\ncomposer.setTempo(180);\nvar inst = composer.createInstrument("' + instrument.id + '", "' + instrument.group + '");\n\n',
+            suffixCode = '\nvar player = composer.finish();\nplayer.play();\n',
             code = prefixCode + userCode + suffixCode;
 
+        return code;
+    }
+
+    function showCode(workspace) {
+        var code = getCode(workspace);
+        setCode(code);
+        switchTo('tab-code');
+    }
+
+    function play(workspace) {
+        var code = getCode(workspace);
+        setCode(code);
         eval(code);
     }
 
@@ -313,9 +350,10 @@ window.addEventListener('load', function () {
             saveBtn = document.getElementById('save'),
             restoreBtn = document.getElementById('restore'),
             clearBtn = document.getElementById('clear'),
+            showCodeBtn = document.getElementById('showCode'),
 			workspace;
 
-		blockCont.style.height = '' + window.innerHeight + 'px';
+		blockCont.style.height = '' + window.innerHeight * 0.8 + 'px';
 
 		workspace = Blockly.inject('blockCont',
 			{toolbox: document.getElementById('toolbox')});
@@ -334,6 +372,10 @@ window.addEventListener('load', function () {
             restore(workspace, name);
         });
 
+        showCodeBtn.addEventListener('click', function () {
+            showCode(workspace);
+        });
+
         clearBtn.addEventListener('click', function () {
             var yes = window.confirm('Sure?');
 
@@ -350,4 +392,6 @@ window.addEventListener('load', function () {
 
     initBlocks();
     init();
+
+    window.switchTo = switchTo;
 });

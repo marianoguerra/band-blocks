@@ -9,3 +9,25 @@ html, body{
  text-align: center;
  margin: 0.5em 0;
 }
+
+.tabs{
+ width: 100%;
+}
+
+.tabs td{
+ padding: 0.3em;
+ cursor: pointer;
+}
+
+td.active{
+ background-color: #046B99;
+ color: #fefefe;
+}
+
+.tab-section{
+ display: none;
+}
+
+.tab-section.active{
+ display: block;
+}
