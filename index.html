@@ -5,11 +5,32 @@
   <title>Band Blocks</title>
   <script src="lib/blockly/blockly_compressed.js"></script>
   <script src="lib/blockly/blocks_compressed.js"></script>
+  <script src="lib/blockly/javascript_compressed.js"></script>
   <script src="lib/blockly/en.js"></script>
+  <script src="lib/band.min.js"></script>
+  <script src="js/samples.js"></script>
   <script src="js/app.js"></script>
 		<link rel="stylesheet" href="css/app.css">
  </head>
  <body>
+  <div class="controls">
+   <button id="play">Play</button>
+   <button id="save">Save</button>
+   <button id="restore">Restore</button>
+   <label for="instrument">Instrument: </label>
+   <select id="instrument">
+    <option value="sine">Sine</option>
+    <option value="square">Square</option>
+    <option value="sawtooth">Saw Tooth</option>
+    <option value="triangle">Triangle</option>
+    <option value="white">White Noise</option>
+    <option value="pink">Pink Noise</option>
+    <option value="red">Red Noise</option>
+   </select>
+   Samples: 
+   <select id="samples"></select>
+   <button id="loadSample">Load Sample</button>
+  </div>
   <div id="blockCont" style="height: 480px; width: 100%;"></div>
 
   <xml id="toolbox" style="display: none">
@@ -17,6 +38,7 @@
       <block type="sound"></block>
       <block type="rest"></block>
       <block type="play"></block>
+      <block type="nextNote"></block>
     </category>
     <category name="Logic" colour="210">
       <block type="controls_if"></block>
@@ -273,7 +295,7 @@
     </category>
     <sep></sep>
     <category name="Variables" colour="330" custom="VARIABLE"></category>
-    <category name="catFunctions" colour="290" custom="PROCEDURE"></category>
+    <category name="Functions" colour="290" custom="PROCEDURE"></category>
   </xml>
 
  </body>
