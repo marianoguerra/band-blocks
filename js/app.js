@@ -386,7 +386,7 @@ window.addEventListener('load', function () {
             showCodeBtn = document.getElementById('showCode'),
 			workspace;
 
-		blockCont.style.height = '' + window.innerHeight * 0.8 + 'px';
+		blockCont.style.height = '' + window.innerHeight * 0.85 + 'px';
 
 		workspace = Blockly.inject('blockCont',
 			{toolbox: document.getElementById('toolbox')});
