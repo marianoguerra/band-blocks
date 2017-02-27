@@ -3,6 +3,8 @@ Band Blocks
 
 A [Blockly](https://developers.google.com/blockly) frontend for [band.js](https://github.com/meenie/band.js>)
 
+Watch an Overview by clicking on the following image:
+
 [![Band Blocks Overview](http://img.youtube.com/vi/Yc1wCjfDr1A/0.jpg)](http://www.youtube.com/watch?v=Yc1wCjfDr1A "Band Blocks Overview")
 
 Author
