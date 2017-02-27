@@ -52,10 +52,43 @@
 
   <xml id="toolbox" style="display: none">
     <category name="Sound" colour="250">
-      <block type="sound"></block>
-      <block type="rest"></block>
-      <block type="play"></block>
-      <block type="nextNote"></block>
+      <block type="note"></block>
+
+      <block type="chord">
+      <value name="NOTES">
+      <block type="lists_create_with">
+      <mutation items="3"></mutation>
+      <value name="ADD0">
+      <block type="note">
+      <field name="NOTE">C</field>
+      <field name="OCTAVE">4</field>
+      <field name="MOD">NATURAL</field>
+      </block>
+      </value>
+      <value name="ADD1">
+      <block type="note">
+      <field name="NOTE">E</field>
+      <field name="OCTAVE">4</field>
+      <field name="MOD">NATURAL</field>
+      </block>
+      </value>
+      <value name="ADD2">
+      <block type="note">
+      <field name="NOTE">G</field>
+      <field name="OCTAVE">4</field>
+      <field name="MOD">NATURAL</field>
+      </block>
+      </value>
+      </block>
+      </value>
+      </block>
+      <block type="rest">
+       <field name="RHYTHM">QUARTER</field>
+      </block>
+      <block type="play">
+       <field name="RHYTHM">QUARTER</field>
+      </block>
+      <block type="nextSound"></block>
     </category>
     <category name="Logic" colour="210">
       <block type="controls_if"></block>

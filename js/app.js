@@ -40,6 +40,22 @@ window.addEventListener('load', function () {
             SHARP: ['NATURAL', false]
         };
 
+    function Chord(notes) {
+        this.notes = notes;
+    }
+
+    Chord.prototype.toString = function () {
+        return this.notes.map(function (note) {
+            return note.toString();
+        }).join(', ');
+    };
+
+    Chord.prototype.next = function () {
+        return new Chord(this.notes.map(function (note) {
+            return note.next();
+        }));
+    };
+
     function Note(level, octave, accidental) {
         this.level = level;
         this.octave = octave;
@@ -98,10 +114,6 @@ window.addEventListener('load', function () {
         console.log(newNote, newOctave, newAccidental);
         return new Note(newNote, newOctave, newAccidental);
     };
-    window.Note = Note;
-
-    function Rest() {
-    }
 
     function switchTo(tabId) {
         var tabs = document.querySelectorAll('.tabs td'),
@@ -125,10 +137,10 @@ window.addEventListener('load', function () {
     }
 
     function initBlocks() {
-        Blockly.Blocks.sound = {
+        Blockly.Blocks.note = {
             init: function() {
                 this.appendDummyInput()
-                    .appendField("sound")
+                    .appendField("note")
                     .appendField(new Blockly.FieldDropdown([
                         ["A","A"],
                         ["B","B"],
@@ -157,7 +169,7 @@ window.addEventListener('load', function () {
             }
         };
 
-		Blockly.JavaScript.sound = function(block) {
+		Blockly.JavaScript.note = function(block) {
 			var note = block.getFieldValue('NOTE'),
 				mod = block.getFieldValue('MOD'),
 				octave = block.getFieldValue('OCTAVE'),
@@ -168,7 +180,7 @@ window.addEventListener('load', function () {
         Blockly.Blocks.play = {
             init: function() {
                 this.appendValueInput("NOTE")
-                    .setCheck("Note")
+                    .setCheck(["Note", "Chord"])
                     .appendField("play")
                     .appendField(new Blockly.FieldDropdown([
                         imgOption('WHOLE', 'img/notes/whole.png', 'Whole'),
@@ -220,11 +232,11 @@ window.addEventListener('load', function () {
             return code;
         };
 
-        Blockly.Blocks.nextNote = {
+        Blockly.Blocks.nextSound = {
             init: function() {
-                this.appendValueInput("NOTE")
-                    .setCheck("Note")
-                    .appendField("next note");
+                this.appendValueInput("SOUND")
+                    .setCheck(["Note", "Chord"])
+                    .appendField("next");
 
                 this.setOutput(true, "Note");
                 this.setColour(230);
@@ -233,10 +245,30 @@ window.addEventListener('load', function () {
             }
         };
 
-        Blockly.JavaScript.nextNote = function(block) {
-            var note = Blockly.JavaScript.valueToCode(block, 'NOTE',
+        Blockly.JavaScript.nextSound = function(block) {
+            var note = Blockly.JavaScript.valueToCode(block, 'SOUND',
                             Blockly.JavaScript.ORDER_ATOMIC),
                 code = note + '.next()';
+            return [code, Blockly.JavaScript.ORDER_ATOMIC];
+        };
+
+        Blockly.Blocks.chord = {
+            init: function() {
+                this.appendValueInput("NOTES")
+                    .setCheck("Array")
+                    .appendField("chord");
+
+                this.setOutput(true, "Chord");
+                this.setColour(230);
+                this.setTooltip('');
+                this.setHelpUrl('');
+            }
+        };
+
+        Blockly.JavaScript.chord = function(block) {
+            var notes = Blockly.JavaScript.valueToCode(block, 'NOTES',
+                            Blockly.JavaScript.ORDER_ATOMIC),
+                code = 'new Chord(' + notes + ')';
             return [code, Blockly.JavaScript.ORDER_ATOMIC];
         };
 
@@ -395,4 +427,6 @@ window.addEventListener('load', function () {
     init();
 
     window.switchTo = switchTo;
+    window.Note = Note;
+    window.Chord = Chord;
 });
